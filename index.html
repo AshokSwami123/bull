@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title> BIG BULL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    
+
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #05070c;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 15px;
+            position: relative;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        /* Ambient Glow Effect */
+        .bg-glow-1 {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.18) 0%, transparent 70%);
+            top: -50px;
+            right: -50px;
+            pointer-events: none;
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(0, 230, 118, 0.12) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+            pointer-events: none;
+        }
+
+        /* Ultra Dynamic Market Ticker Cards */
+        .market-ticker-grid {
+            width: 100%;
+            max-width: 420px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+            z-index: 2;
+        }
+
+        .ticker-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 10px 8px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .ticker-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #00f2fe, #00e676);
+        }
+
+        .ticker-card .name {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .ticker-card .val {
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            color: #00e676;
+            text-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+        }
+
+        .ticker-card .val i {
+            font-size: 11px;
+            animation: float-up 1.5s infinite ease-in-out alternate;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+
+        /* Main Glass Card */
+        .card {
+            max-width: 420px;
+            width: 100%;
+            background: rgba(13, 17, 28, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 32px;
+            padding: 32px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        /* Logo Wrapper with Official Verified Badge */
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .logo {
+            width: 95px;
+            height: 95px;
+            border-radius: 26px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe, #00e676);
+            background-size: 200% 200%;
+            animation: gradientRotate 3s ease infinite;
+            z-index: 1;
+        }
+
+        /* Verified Tick Badge styling */
+        .verified-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            background: #0088cc;
+            color: #ffffff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border: 3px solid #0d111c;
+            box-shadow: 0 4px 10px rgba(0, 136, 204, 0.6);
+            z-index: 3;
+        }
+
+        @keyframes gradientRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header Texts */
+        .channel-name {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 40%, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .sub-title {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+            margin-bottom: 22px;
+        }
+
+        /* Pulsing Telegram Button */
+        .btn-wrapper {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .join-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #0088cc, #0055aa);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 17px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 136, 204, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .join-btn i {
+            font-size: 20px;
+        }
+
+        .btn-pulse {
+            position: absolute;
+            inset: 0;
+            border-radius: 50px;
+            background: rgba(0, 136, 204, 0.6);
+            z-index: 1;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.08, 1.25); opacity: 0; }
+        }
+
+        .join-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 136, 204, 0.6);
+        }
+
+        /* Grid Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 12px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 22px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-box .val {
+            font-size: 16px;
+            font-weight: 800;
+            color: #00f2fe;
+            display: block;
+        }
+
+        .stat-box .lbl {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* Features Box */
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+            margin-bottom: 22px;
+        }
+
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(0, 242, 254, 0.1);
+            color: #00f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .feature-card span {
+            font-size: 13.5px;
+            color: #cbd5e1;
+        }
+
+        .feature-card strong {
+            color: #fff;
+        }
+
+        .feature-card .highlight {
+            color: #00e676;
+            font-weight: 700;
+        }
+
+        /* Badges */
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            margin-top: 20px;
+        }
+
+        .custom-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: rgba(0, 230, 118, 0.08);
+            color: #00e676;
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Footer Meta Link */
+        .footer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #475569;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer-link span {
+            color: #00f2fe;
+            font-weight: 600;
+        }
+
+        .footer-link:hover {
+            color: #94a3b8;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="bg-glow-1"></div>
+<div class="bg-glow-2"></div>
+
+<!-- 3D Glass Market Ticker Cards -->
+<div class="market-ticker-grid">
+    <div class="ticker-card">
+        <span class="name">NIFTY 50</span>
+        <span class="val"><i class="fas fa-arrow-up"></i> +1.2%</span>
+    </div>
+    <div class="ticker-card">
+        <span class="name">BANKNIFTY</span>
+        <span class="val"><i class="fas fa-arrow-up"></i> +0.8%</span>
+    </div>
+    <div class="ticker-card">
+        <span class="name">ACCURACY</span>
+        <span class="val"><i class="fas fa-bullseye"></i> 95%</span>
+    </div>
+</div>
+
+<div class="card">
+    <!-- Channel Logo with Verified Blue Tick -->
+    <div class="logo-wrapper">
+        <div class="logo-ring"></div>
+        <img class="logo" src="logo.jpg" alt="Logo" onerror="this.src='https://placehold.co/95x95/0f172a/00f2fe?text=SA'">
+        <div class="verified-badge" title="Verified Channel">
+            <i class="fas fa-check"></i>
+        </div>
+    </div>
+
+    <!-- Title -->
+    <div class="channel-name">STOCK ADVISOR</div>
+    <div class="sub-title">BIG BULL</div>
+
+    <!-- Animated Join Button -->
+    <div class="btn-wrapper">
+        <div class="btn-pulse"></div>
+        <a href="https://t.me/+ulTnEBDLZORjYjhl" class="join-btn" target="_blank" rel="noopener"  onclick="fbq('trackCustom', 'TelegramJoinClick');">
+            <i class="fab fa-telegram-plane"></i> JOIN TELEGRAM VIP
+        </a>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="val">11 761 +</span>
+            <span class="lbl">Members</span>
+        </div>
+        <div class="stat-box">
+            <span class="val">95%</span>
+            <span class="lbl">Accuracy</span>
+        </div>
+        <div class="stat-box">
+            <span class="val">FREE</span>
+            <span class="lbl">Daily Signals</span>
+        </div>
+    </div>
+
+    <!-- Key Features List -->
+    <div class="feature-list">
+       
+        <div class="feature-card">
+            <div class="icon-box"><i class="fas fa-bolt"></i></div>
+            <span>📞 Daily <span class="highlight">2-5 Calls</span> (BankNifty & Nifty)</span>
+        </div>
+        <div class="feature-card">
+            <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+            <span>💰 Special <span class="highlight">Loss Recovery</span> Strategies</span>
+        </div>
+        <div class="feature-card">
+            <div class="icon-box"><i class="fas fa-crosshairs"></i></div>
+            <span>🎯 Proper Entry, Target & Stop-loss</span>
+        </div>
+    </div>
+
+     <a href="https://t.me/+ulTnEBDLZORjYjhl" class="join-btn" target="_blank" rel="noopener"  onclick="fbq('trackCustom', 'TelegramJoinClick');">
+            <i class="fab fa-telegram-plane"></i> JOIN TELEGRAM VIP
+        </a>
+
+    <!-- Trust Badge -->
+    <div class="badge-container">
+        <span class="custom-badge"><i class="fas fa-check-circle"></i> Verified Channel</span>
+        <span class="custom-badge"><i class="fas fa-fire"></i> Active Now</span>
+    </div>
+
+   
+</div>
+</body>
+</html>
